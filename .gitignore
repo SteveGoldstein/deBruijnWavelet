@@ -1,0 +1,6 @@
+*~
+queue/log
+queue/error
+outdir/
+data/
+bin/jellyfish

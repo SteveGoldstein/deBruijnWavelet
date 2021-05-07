@@ -1,0 +1,28 @@
+##########################################
+##text version of k mer table
+
+nohup jellyfish-linux count -s 10M  -m 31 -o tmp/hg.k31.txt --text tmp/GCA_000001405.28_GRCh38.p13_genomic.fna >& err/hg.k31.err &
+
+
+ nohup jellyfish-linux count -s 10M  -m 31 -o tmp/mm.k31.txt --text tmp/GCA_000001635.9_GRCm39_genomic.fna >& err/mm.k31.err &
+##########################################
+
+### manually parse text to get histogram:
+nohup cat tmp/mm.k31.txt |perl -nale 'next if ($.==1); $h{$F[1]}++; END{@a=sort{$a<=>$b} keys %h;  foreach $i (1..$a[-1]) {$n = $h{$i}//0; print join "\t", $i, $n}}' > tmp/mm.k31.hist &
+
+nohup cat tmp/hg.k31.txt |perl -nale 'next if ($.==1); $h{$F[1]}++; END{@a=sort{$a<=>$b} keys %h;  foreach $i (1..$a[-1]) {$n = $h{$i}//0; print join "\t", $i, $n}}' > tmp/hg.k31.hist 2> err/hg.k31.hist.err &
+
+##########################################
+
+### experiments with histo gram;
+[sgoldstein@pink deBruijnWaveLet]$ for f in  tmp/*hist ; do head -100000 $f|tail -50000|perl -nale '$s +=$F[1]; END{print $s}';  echo; done
+18
+
+16
+
+##   look at the highest freq mers:
+##  result:    mm dinuc 10x higher than hg?;  interesting part of spectrum;
+
+cat tmp/mm.k31.txt |perl -nale 'print if ($F[1] > 100000);' >& tmp/mm.k31.gt100k.txt &
+cat tmp/hg.k31.txt|perl -nale 'print if ($F[-1] > 60000)' >& tmp/hg.k31.gt60k.txt &
+

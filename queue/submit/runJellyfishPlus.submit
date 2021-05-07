@@ -7,7 +7,7 @@ jfMerDir = /staging/sgoldstein/deBruijnWavelet/merTables
 merSize = 31
 CPUS = 2
 ## expose CPUs   
-jfArgs   = -C -m $(merSize) -t $(CPUS)  -s 10G
+jfArgs   = -C -m $(merSize) -t $(CPUS)  -s $(size)
 
 output = outdir/jellyfish.$(CLUSTER).$(PROCESS).out
 error =  queue/error/jellyfish.$(CLUSTER).$(PROCESS).err
@@ -19,8 +19,17 @@ transfer_input_files = bin/jellyfish, http://proxy.chtc.wisc.edu/SQUID/sgoldstei
 #transfer_output_files = 
 notification = never
 
+##############################
+##  Experiment: choose one set
+# size = 10G
+# MEM  = "80 GB"
+
+size = 1G
+MEM  = "50 GB"
+##############################
+
 request_cpus = $(CPUS)
-request_memory = 80 GB
+request_memory = $(MEM)
 request_disk = 40 GB
 
 queue fastaFile in GCA_000001405.28_GRCh38.p13_genomic.fna.gz, GCA_000001635.9_GRCm39_genomic.fna.gz

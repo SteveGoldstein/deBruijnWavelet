@@ -1,31 +1,26 @@
 universe = vanilla
 
-executable  = bin/runJellyfishOnEachSample.sh
-arguments = $(tarFile) $(jfMerDir) $(CLUSTER) $(PROCESS) $(jfArgs) 
+executable  = bin/runJellyfish.sh
+arguments = $(fastaFile) $(jfMerDir) $(merSize) $(CLUSTER) $(PROCESS) $(jfArgs) 
 
-merSize = 21
-CPUS = 4
+jfMerDir = /staging/sgoldstein/deBruijnWavelet/merTables
+merSize = 31
+CPUS = 2
 
-jfMerDir = /mnt/gluster/sgoldstein/Projects/IdentifyGBSSamples/jellyfish/jf-$(merSize)
-jfArgs   = -C -m $(merSize) -t $(CPUS)  -s 10G
-
-+AccountingGroup = Botany_Givnish
+jfArgs   = -C -m $(merSize) -t $(CPUS)  -s 1G
 
 output = outdir/jellyfish.$(CLUSTER).$(PROCESS).out
 error =  queue/error/jellyfish.$(CLUSTER).$(PROCESS).err
 log = queue/log/jellyfish.$(CLUSTER).log
 
-requirements = (OpSysMajorVer == 7) && (Target.HasGluster == true)
-#requirements = Target.HasGluster == true
+Requirements = (Target.HasCHTCStaging == true)
 
-
-transfer_input_files = bin
-transfer_output_files = 
+transfer_input_files = bin/jellyfish, http://proxy.chtc.wisc.edu/SQUID/sgoldstein/deBruijnWavelet/$(fastaFile)
+#transfer_output_files = 
 notification = never
 
-request_cpus = 4
+request_cpus = $(CPUS)
 request_memory = 50 GB
-request_disk = 30 GB
+request_disk = 40 GB
 
-queue tarFile matching /mnt/gluster/sgoldstein/Projects/IdentifyGBSSamples/samples/*
-# queue tarFile matching  /mnt/gluster/sgoldstein/Projects/IdentifyGBSSamples/samples/12-31-14Plate1_NoIndex_L007_R1_001.samples.105949892.0.tgz
+queue fastaFile in GCA_000001635.9_GRCm39_genomic.fna.gz

@@ -7,7 +7,7 @@ jfMerDir = /staging/sgoldstein/deBruijnWavelet/merTables
 merSize = 31
 CPUS = 2
 
-jfArgs   = -C -m $(merSize) -t $(CPUS)  -s 10G
+jfArgs   = -C -m $(merSize) -t $(CPUS)  -s 1G
 
 output = outdir/jellyfish.$(CLUSTER).$(PROCESS).out
 error =  queue/error/jellyfish.$(CLUSTER).$(PROCESS).err

@@ -3,7 +3,7 @@ universe = vanilla
 executable  = bin/runJellyfishPlus.sh
 arguments = $BASENAME(fastaFile) $(outDir) $(merSize) $(CPUS) $(CLUSTER) $(PROCESS) $(jfArgs) 
 
-outDir = outdir
+outDir = outdir.$(PROCESS)
 merSize = 31
 CPUS = 2
 ## expose CPUs   

@@ -1,6 +1,6 @@
 universe = vanilla
 
-executable  = bin/runJellyfish.sh
+executable  = bin/runJellyfishPlus.sh
 arguments = $(fastaFile) $(jfMerDir) $(merSize) $(CPUS) $(CLUSTER) $(PROCESS) $(jfArgs) 
 
 jfMerDir = /staging/sgoldstein/deBruijnWavelet/merTables
@@ -13,7 +13,8 @@ output = outdir/jellyfish.$(CLUSTER).$(PROCESS).out
 error =  queue/error/jellyfish.$(CLUSTER).$(PROCESS).err
 log = queue/log/jellyfish.$(CLUSTER).log
 
-Requirements = (Target.HasCHTCStaging == true)
+## Not needed if executing rm $merFile in script;
+## Requirements = (Target.HasCHTCStaging == true)
 
 transfer_input_files = bin/jellyfish, http://proxy.chtc.wisc.edu/SQUID/sgoldstein/deBruijnWavelet/$(fastaFile)
 #transfer_output_files = 
@@ -22,10 +23,10 @@ notification = never
 ##############################
 ##  Experiment: choose one set
 # size = 10G
-# MEM  = "80 GB"
+# MEM  = 80 GB
 
 size = 1G
-MEM  = "50 GB"
+MEM  = 50 GB
 ##############################
 
 request_cpus = $(CPUS)

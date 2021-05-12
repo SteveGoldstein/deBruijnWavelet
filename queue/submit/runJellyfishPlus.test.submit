@@ -1,7 +1,7 @@
 universe = vanilla
 
 executable  = bin/runJellyfishPlus.sh
-arguments = $(fastaFile) $(outDir) $(merSize) $(CPUS) $(CLUSTER) $(PROCESS) $(jfArgs) 
+arguments = $BASENAME(fastaFile) $(outDir) $(merSize) $(CPUS) $(CLUSTER) $(PROCESS) $(jfArgs) 
 
 outDir = outdir
 merSize = 31
@@ -16,7 +16,8 @@ log = queue/log/jellyfish.$(CLUSTER).log
 ## Not needed if executing rm $merFile in script;
 ## Requirements = (Target.HasCHTCStaging == true)
 
-transfer_input_files = bin/jellyfish, http://proxy.chtc.wisc.edu/SQUID/sgoldstein/deBruijnWavelet/$(fastaFile)
+#transfer_input_files = bin/jellyfish, http://proxy.chtc.wisc.edu/SQUID/sgoldstein/deBruijnWavelet/$(fastaFile)
+transfer_input_files = bin/jellyfish, $(fastaFile)
 
 transfer_output_files = $(outDir)
 notification = never
@@ -27,11 +28,11 @@ notification = never
 # MEM  = 80 GB
 
 size = 1G
-MEM  = 50 GB
+MEM  = 5 GB
 ##############################
 
 request_cpus = $(CPUS)
 request_memory = $(MEM)
 request_disk = 40 GB
 
-queue fastaFile in GCA_000001405.28_GRCh38.p13_genomic.fna.gz, GCA_000001635.9_GRCm39_genomic.fna.gz
+queue fastaFile matching data/test/*fna.gz

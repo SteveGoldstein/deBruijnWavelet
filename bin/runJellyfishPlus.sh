@@ -21,7 +21,7 @@ echo "Running jellyfish count $jfArgs -o $merFile"
 
 echo "Running jellyfish histo and stats"
 ./jellyfish histo --high 1000000 -t $CPUS -o $histoFile $merFile
-./jellyfish stats -t $CPUS -o $statsFile $merFile
+./jellyfish stats -o $statsFile $merFile
 
 /bin/gzip $histoFile
 ## copy jf output file to /staging 

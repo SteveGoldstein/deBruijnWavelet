@@ -1,0 +1,4 @@
+### analyze memory usage of jobs
+
+grep -A14 '^005' queue/log/jellyfish.8904355.log |perl -nale 'BEGIN{print join "\t", qw(JobID RunTime TotalRunTime Memory MemRequest) } if (/^005/) {@job=($F[1]); next}; if (/Remote/) {$F[2]=~s/,$//; push @job, $F[2]; next} if (/Memory/) {push @job, @F[-3,-2]; push @lines, [@job]} END{map {print join "\t", @$_} sort {$a->[0] cmp $b->[0] } @lines;}'
+

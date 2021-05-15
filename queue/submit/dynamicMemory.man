@@ -1,0 +1,7 @@
+
+request_memory = ifthenelse(MemoryUsage =!= undefined,(MemoryUsage * 3/2), 2048)
+
+periodic_hold = (MemoryUsage >= ((RequestMemory) * 5/4 )) && (JobStatus == 2)
+
+periodic_release = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 180) && (NumJobStarts < 5) && (HoldReasonCode =!= 13) && (HoldReasonCode =!= 34)
+

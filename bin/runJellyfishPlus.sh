@@ -16,12 +16,12 @@ histoFile=${merFile/.jf/.histo}
 statsFile=${merFile/.jf/.stats}
 
 mkdir $outDir
-echo "Running jellyfish count $jfArgs -o $merFile"
+#echo "Running jellyfish count $jfArgs -o $merFile"
 ./jellyfish count $jfArgs -o $merFile  <(/bin/zcat $fastaFile)
 
 
-echo "Running jellyfish histo and stats"
-./jellyfish histo --high 1000000 -t $CPUS -o $histoFile $merFile
+#echo "Running jellyfish histo and stats"
+./jellyfish histo --high 1000000000 -t $CPUS -o $histoFile $merFile
 /bin/gzip $histoFile
 
 ./jellyfish stats -o $statsFile $merFile

@@ -1,10 +1,10 @@
+
 ##### Run jellyfish and extract the histogram, deleting the large jf database file.
-##       Range of k  7..97 by 10
+##       Range of k=4..100  (including k even)
 ##       Mouse and human ref sequence
 
 ## v 2:  ditch the -C (canonical) switch because m and rev-compl m shouldn't be combined in a genome;
-##       Start with size = genome size 3G;
-##       adjust memory;
+##         
  
 universe = vanilla
 
@@ -12,11 +12,9 @@ executable  = bin/runJellyfishPlus.sh
 arguments = $(fastaFile) $(outDir) $(merSize) $(CPUS) $(CLUSTER) $(PROCESS) $(jfArgs) 
 
 outDir = outdir.$(CLUSTER)
-#merSize = 31
 
-CPUS = 2
+CPUS = 1
 size = 3G
-#MEM  = 50 GB
 
 ## expose CPUs   
 jfArgs   =  -m $(merSize) -t $(CPUS)  -s $(size)
@@ -25,26 +23,28 @@ output = outdir/jellyfish.$(CLUSTER).$(PROCESS).out
 error =  queue/error/jellyfish.$(CLUSTER).$(PROCESS).err
 log = queue/log/jellyfish.$(CLUSTER).k$(merSize).log
 
-## Not needed if executing rm $merFile in script;
-## Requirements = (Target.HasCHTCStaging == true)
+###############################################################
+##### Put job on hold if it's using too much memory and then release it
+periodic_hold = (MemoryUsage >= ((RequestMemory) * 5/4 )) && (JobStatus == 2)
+periodic_release = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 60) && (NumJobStarts < 5) && (HoldReasonCode =!= 13) && (HoldReasonCode =!= 34)
+###############################################################
 
 transfer_input_files = bin/jellyfish, http://proxy.chtc.wisc.edu/SQUID/sgoldstein/deBruijnWavelet/$(fastaFile)
-
 transfer_output_files = $(outDir)
 notification = never
 
 ##############################
-##############################
-
 request_cpus = $(CPUS)
-request_memory = $INT(MEM)
 request_disk = $INT(DISK)
-
+### Dynamically add 10GB to memory request if the job has been put on hold 
+request_memory = ifthenelse(MemoryUsage =!= undefined,(MemoryUsage + 10000), $INT(MEM))
+##############################
 MEM = $(merSize) * 1024
 DISK = $(merSize) * 1024 * 1024
+##############################
 
 fastaFile = GCA_000001405.28_GRCh38.p13_genomic.fna.gz
-queue merSize from seq 5 2 100 |
+queue merSize from seq 4 100 |
 
 fastaFile = GCA_000001635.9_GRCm39_genomic.fna.gz
-queue merSize from seq 5 2 100 |
+queue merSize from seq 4 100 |

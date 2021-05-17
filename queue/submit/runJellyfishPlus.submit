@@ -26,7 +26,7 @@ log = queue/log/jellyfish.$(CLUSTER).k$(merSize).log
 ###############################################################
 ##### Put job on hold if it's using too much memory and then release it
 periodic_hold = (MemoryUsage =!= undefined) && (MemoryUsage >= ((RequestMemory) * 5/4 )) && (JobStatus == 2) 
-periodic_release = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 240) && (NumJobStarts < 5) && (HoldReasonCode =?= 34)
+periodic_release = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 60) && (NumJobStarts < 10) && (HoldReasonCode =?= 34)
 ###############################################################
 
 transfer_input_files = bin/jellyfish, http://proxy.chtc.wisc.edu/SQUID/sgoldstein/deBruijnWavelet/$(fastaFile)

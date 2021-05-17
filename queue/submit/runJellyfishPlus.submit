@@ -34,18 +34,18 @@ transfer_output_files = $(outDir)
 notification = never
 
 ##############################
-request_cpus = $(CPUS)
-request_disk = $INT(DISK)
-### Dynamically add 10GB to memory request if the job has been put on hold 
-request_memory = ifthenelse(MemoryUsage =!= undefined,(MemoryUsage + 10000), $INT(MEM))
-##############################
 MEM = $(merSize) * 1024
 DISK = $(merSize) * 1024 * 1024
 ##############################
 
-fastaFile = GCA_000001405.28_GRCh38.p13_genomic.fna.gz
-#queue merSize from seq 4 100 |
-queue merSize from seq 15 20 |
+##############################
+request_cpus = $(CPUS)
+request_disk = $INT(DISK)
+### Dynamically increase memory request if the job has been put on hold 
+request_memory = ifthenelse(MemoryUsage =!= undefined,(MemoryUsage * 3/2), $INT(MEM))
 
-#fastaFile = GCA_000001635.9_GRCm39_genomic.fna.gz
-#queue merSize from seq 4 100 |
+fastaFile = GCA_000001405.28_GRCh38.p13_genomic.fna.gz
+queue merSize from seq 4 100 |
+
+fastaFile = GCA_000001635.9_GRCm39_genomic.fna.gz
+queue merSize from seq 4 100 |

@@ -3,3 +3,10 @@
 grep Memory queue/log/jellyfish.8905338.k*|grep -v Usage|perl -F"\." -nale '$F[2]=~s/^k//; @G = split " ",$F[-1]; print join "\t", $F[2], @G[-3,-2,-1]'|sort -k1,1n|less
 
 ##   k = 15  30G  k=16  120+G
+
+### time is all under 1.5 hrs;
+grep 'Total R' queue/log/jellyfish.8905338.k*|perl -F"\." -nale '$F[2]=~s/^k//; s/^\S*\s//;print join "\t", $F[2], $_'|sort -k1,1n|less
+
+### disk is reasonable:
+grep Disk queue/log/jellyfish.8905338.k*|grep -v Usage|perl -F"\." -nale '$F[2]=~s/^k//; @G = split " ",$F[-1]; print join "\t", $F[2], @G[-3,-2,-1]'|sort -k1,1n|less
+

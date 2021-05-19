@@ -50,3 +50,13 @@ other ideas:  run twice: max count small to get lower freq mers and all the low 
 maybe merge create DB but doesn't use memory?  need experiments;   I think the A in B then dump;  cmp to A;  cmp to B dump   
 
 use --disk?
+
+================
+algebraic ideas:
+	  lamplighter and schrier
+	  	      as k increases:  
+		      wavelet sliding window;
+          betti numbers
+
+I think there are more.
+

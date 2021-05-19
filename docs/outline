@@ -1,0 +1,27 @@
+5/19/2021:  Prep for discussion with daniel and shannon
+
+motivation:  fourier: only a few papers; only MAFFT is application? why? wrong question;
+
+ground work:   deBruijn hash give structure of graph for a given k  cannot reconstruct path through repeats > k
+       k = length of genome: one node;
+
+       as k varies (monotonically decreasing: count from nodes split and grow  or edge in k becomes node in k+1
+
+
+       histo is a projection that contains a lot of info:   
+
+       could use this plus other info:  e.g.  bounded range of counts with complete histo...
+
+examples:
+	1.  human mouse:  repeats
+	2.  metagenomics sample
+
+	3.  struct variants:  segmental duplications:  human/ape  human polymorphic variation (Eichler)
+	4.  op map Cancer genomes (full hash, not hist?)
+
+	5.  sample mixup
+
+wavelets:
+
+decorations 
+

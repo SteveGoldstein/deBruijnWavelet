@@ -1,0 +1,5 @@
+
+#### Memory shows formula works except for k=15,16
+grep Memory queue/log/jellyfish.8905338.k*|grep -v Usage|perl -F"\." -nale '$F[2]=~s/^k//; @G = split " ",$F[-1]; print join "\t", $F[2], @G[-3,-2,-1]'|sort -k1,1n|less
+
+##   k = 15  30G  k=16  120+G

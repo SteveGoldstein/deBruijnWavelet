@@ -1,0 +1,52 @@
+5/19/2021
+
+1.  2 d plots:  
+    a. histo groups = human, mouse,  condition by k  
+    b.       groups = k (or k 10,20,..100)  condition by human mouse
+
+2.  3d plot:  wireframe human mouse on same panel;
+    interactive to zoom in on or rotate
+
+3.  scale by overlap:   
+    	  a.  break up into N chunks with overlap k-1
+	  b.  merge .jf DBs progressively  and save jf's 
+	      or A then only B in A; then B not in A I wonder if this works;
+	  histo
+	  
+3.  wavelet construction
+    	    break into chunks:
+	    histo for each chunk
+	    merge hierarchically and then histo
+
+
+search: relies on compu geom of histos  or earthmovers distance
+
+decorate:  minimizers imposed on dB graph;
+	   or kmer sorted by minimizers and then branches off the minizmizer:  not as a mem hack (although it 
+	   works as a mem hack) but as an additional piece of data: num occurences = n for each minimizer: 
+	   	 sum over min and you get staam histo.
+
+other decoration:  by gc content (binned)  or num As  etc
+
+memory hack:  use --canonical to decrease size of hash table
+
+B| mer is in A:
+  1. same as A|mer is in B
+  2. cmp:  A to B|mer is in A:  either count == A count or == A+B count:  thus recover A;
+     	   num w count == 
+	  
+	  too hard to think about now.  point:  could use --dump on all three jf and then get all histos.
+
+========
+cluster (long) reads:  compute profile: match to reference (need metric for match quality):
+	think of MSA and read MAFFT
+
+op maps:   k = 4 ..  20 or 30 or more, but don't need too much more:
+   cluster, wavelet, etc depends on geometric hashing: tolerance  ellipsoid axes lengths
+
+other ideas:  run twice: max count small to get lower freq mers and all the low counts (1 byte or something)
+      	      	  min count = prev max count (-1?)
+
+maybe merge create DB but doesn't use memory?  need experiments;   I think the A in B then dump;  cmp to A;  cmp to B dump   
+
+use --disk?

@@ -10,13 +10,8 @@ PROCESS=$1;  shift
 jfArgs=$@
 
 
-/bin/mkdir -p --verbose $outDir
-echo $fastaFilePrefix
-ls -l $merDir/$fastaFilePrefix*
-
-echo "cp $merDir/${fastaFilePrefix}* ."
-
-
+### Set up environment
+/bin/mkdir -p $outDir
 
 cp $merDir/${fastaFilePrefix}* .
 merFile=$outDir/$fastaFilePrefix.merged.k$merSize.$CLUSTER.$PROCESS.jf
@@ -24,21 +19,19 @@ merFile=$outDir/$fastaFilePrefix.merged.k$merSize.$CLUSTER.$PROCESS.jf
 histoFile=${merFile/.jf/.histo}
 statsFile=${merFile/.jf/.stats}
 
-echo "Running jellyfish merge  -o $merFile $fastaFilePrefix*.jf"
-echo "output files: $histoFile $statsFile"
-
+#### Merge two files
 ./jellyfish merge $jfArgs -o $merFile  $fastaFilePrefix*.jf
 
+### Compute histo and stats of merged file
 ./jellyfish histo --high 1000000000 -t $CPUS -o $histoFile $merFile
 /bin/gzip $histoFile
-
 ./jellyfish stats -o $statsFile $merFile
 
-
-
-## copy jf output file to /staging
-
+## copy jf output file to /staging if you want
 #mv $merFile $merDir/
 
+## clean up
+rm $merFile
 rm $fastaFilePrefix*
 
+exit

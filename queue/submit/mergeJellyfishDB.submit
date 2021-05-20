@@ -26,6 +26,7 @@ Requirements = (Target.HasCHTCStaging == true)
 periodic_hold = (MemoryUsage =!= undefined) && (MemoryUsage >= ((RequestMemory) * 5/4 )) && (JobStatus == 2) 
 periodic_release = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 60) && (NumJobStarts < 10) && (HoldReasonCode =?= 34 || HoldReasonCode =?= 3)
 ###############################################################
+## add dynamic mem ??
 
 transfer_input_files = bin/jellyfish
 transfer_output_files = $(outDir)
@@ -36,7 +37,7 @@ DISK = $(merSize) * 1024 * 1024 * 2
 ##############################
 
 ##############################
-request_memory = 1G
+request_memory = 10G
 request_cpus = $(CPUS)
 request_disk = $INT(DISK)
 

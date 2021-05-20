@@ -44,4 +44,4 @@ request_disk = $INT(DISK)
 ### Dynamically increase memory request if the job has been put on hold 
 request_memory = ifthenelse(MemoryUsage =!= undefined,(MemoryUsage * 3/2), $INT(MEM))
 
-queue fastaFile in GCA_000001405.28_GRCh38.p13_genomic.fna.gz, GCA_000001635.9_GRCm39_genomic.fna.gz
+queue fastaFile in  GCA_000001635.9_GRCm39_genomic_part1.fna.gz, GCA_000001635.9_GRCm39_genomic_part2.k$(merSize).fna.gz

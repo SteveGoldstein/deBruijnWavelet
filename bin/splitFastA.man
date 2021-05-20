@@ -14,3 +14,11 @@ TTCAGCCTTTTTTTTGTTATAAATATAGCAGAAGCTACTCATC
 
 
 merSize=21; zcat data/processed/GCA_000001635.9_GRCm39_genomic_part2.template.fna.gz |perl -ple 'BEGIN{$merSize = shift; $overlap = $merSize-1; print ">overlapping_$overlap.bases"} if ($.==1) {s/^.*(\S{$overlap})$/$1/;}' $merSize | gzip -c > data/processed/GCA_000001635.9_GRCm39_genomic_part2.k$merSize.fna.gz
+
+
+## check: Yup
+ zcat data/processed/GCA_000001635.9_GRCm39_genomic_part2.k21.fna.gz |head -3
+>overlapping_20.bases
+                       TATAGCAGAAGCTACTCATC
+TTCAGCCTTTTTTTTGTTATAAATATAGCAGAAGCTACTCATC
+ATTAAATCGTTCTAATAATCAGATTTCAGTTTAGTCTTCATGTTACAAAATTGCTTTCTCTGTCTGgaataaaattgtat

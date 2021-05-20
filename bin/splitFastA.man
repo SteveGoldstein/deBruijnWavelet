@@ -1,0 +1,16 @@
+zcat data/raw/GCA_000001635.9_GRCm39_genomic.fna.gz |wc -l
+34102874
+ perl -le '$n=34102874; print $n/2'
+
+ mkdir data/processed
+ zcat data/raw/GCA_000001635.9_GRCm39_genomic.fna.gz |head -17051437 > data/processed/GCA_000001635.9_GRCm39_genomic_part1.fna
+ zcat data/raw/GCA_000001635.9_GRCm39_genomic.fna.gz |tail -17051438 > data/processed/GCA_000001635.9_GRCm39_genomic_part2.fna
+ head -1 !$
+ tail -1 data/processed/GCA_000001635.9_GRCm39_genomic_part1.fna
+TTCAGCCTTTTTTTTGTTATAAATATAGCAGAAGCTACTCATC
+ tail -1 data/processed/GCA_000001635.9_GRCm39_genomic_part1.fna
+TTCAGCCTTTTTTTTGTTATAAATATAGCAGAAGCTACTCATC
+ mv data/processed/GCA_000001635.9_GRCm39_genomic_part2.fna data/processed/GCA_000001635.9_GRCm39_genomic_part2.template.fna
+
+
+merSize=21; zcat data/processed/GCA_000001635.9_GRCm39_genomic_part2.template.fna.gz |perl -ple 'BEGIN{$merSize = shift; $overlap = $merSize-1; print ">overlapping_$overlap.bases"} if ($.==1) {s/^.*(\S{$overlap})$/$1/;}' $merSize | gzip -c > data/processed/GCA_000001635.9_GRCm39_genomic_part2.k$merSize.fna.gz

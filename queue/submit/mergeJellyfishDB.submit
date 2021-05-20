@@ -1,0 +1,45 @@
+## Experiment with splitting:
+## Split FastA file into two pieces (with overlap merSize-1); run jf; merge; compute histo
+##        compare: memory usage; size of jf files; histos
+
+universe = vanilla
+
+executable  = bin/mergeJellyfishDB.sh
+arguments = $(fastaFilePrefix) $(jfMerDir) $(outDir) $(merSize) $(CPUS) $(CLUSTER) $(PROCESS) $(jfArgs)
+
+jfMerDir = /staging/sgoldstein/deBruijnWavelet/merTables
+outDir = outdir.$(CLUSTER)
+
+CPUS = 1
+#size = 3G
+merSize = 21
+
+
+output = outdir/jellyfish.$(CLUSTER).$(PROCESS).out
+error =  queue/error/jellyfish.$(CLUSTER).$(PROCESS).err
+log = queue/log/jellyfish.$(CLUSTER).log
+
+Requirements = (Target.HasCHTCStaging == true)
+
+###############################################################
+##### Put job on hold if it's using too much memory and then release it
+periodic_hold = (MemoryUsage =!= undefined) && (MemoryUsage >= ((RequestMemory) * 5/4 )) && (JobStatus == 2) 
+periodic_release = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 60) && (NumJobStarts < 10) && (HoldReasonCode =?= 34 || HoldReasonCode =?= 3)
+###############################################################
+
+transfer_input_files = bin/jellyfish
+#transfer_output_files = $(outDir)
+notification = never
+
+##############################
+MEM = $(merSize) * 1024
+DISK = $(merSize) * 1024 * 1024 * 2
+##############################
+
+##############################
+request_cpus = $(CPUS)
+request_disk = $INT(DISK)
+### Dynamically increase memory request if the job has been put on hold 
+request_memory = ifthenelse(MemoryUsage =!= undefined,(MemoryUsage * 3/2), $INT(MEM))
+
+queue fastaFilePrefix in GCA_000001635.9_GRCm39_genomic

@@ -10,7 +10,7 @@ arguments = $(fastaFilePrefix) $(jfMerDir) $(outDir) $(merSize) $(CPUS) $(CLUSTE
 jfMerDir = /staging/sgoldstein/deBruijnWavelet/merTables
 outDir = outdir.$(CLUSTER)
 
-CPUS = 1
+CPUS = 4
 #size = 3G
 merSize = 21
 
@@ -28,18 +28,16 @@ periodic_release = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 6
 ###############################################################
 
 transfer_input_files = bin/jellyfish
-#transfer_output_files = $(outDir)
+transfer_output_files = $(outDir)
 notification = never
 
 ##############################
-MEM = $(merSize) * 1024
 DISK = $(merSize) * 1024 * 1024 * 2
 ##############################
 
 ##############################
+request_memory = 1G
 request_cpus = $(CPUS)
 request_disk = $INT(DISK)
-### Dynamically increase memory request if the job has been put on hold 
-request_memory = ifthenelse(MemoryUsage =!= undefined,(MemoryUsage * 3/2), $INT(MEM))
 
-queue fastaFilePrefix in GCA_000001635.9_GRCm39_genomic
+queue fastaFilePrefix in GCA_000001635.9_GRCm39_genomic_part

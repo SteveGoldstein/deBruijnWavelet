@@ -9,14 +9,34 @@ CLUSTER=$1;  shift
 PROCESS=$1;  shift
 jfArgs=$@
 
-cp $merDir/$fastFilePrefix* .
-merFile=$fastaFilePrefix.merged
-merFile=$merFile.k$merSize.$CLUSTER.$PROCESS.jf
+echo $fastaFilePrefix
+ls -l $merDir/$fastaFilePrefix*
+
+echo "cp $merDir/$fastaFilePrefix* ."
+
+
+
+cp $merDir/${fastaFilePrefix}* .
+merFile=$outDir/$fastaFilePrefix.merged.k$merSize.$CLUSTER.$PROCESS.jf
+
+histoFile=${merFile/.jf/.histo}
+statsFile=${merFile/.jf/.stats}
     
-#echo "Running jellyfish count $jfArgs -o $merFile"
+echo "Running jellyfish merge  -o $merFile"
+echo "output files: $histoFile $statsFile"
+
 ./jellyfish merge $jfArgs -o $merFile  $fastaFilePrefix*.jf
 
+./jellyfish histo --high 1000000000 -t $CPUS -o $histoFile $merFile
+/bin/gzip $histoFile
+
+./jellyfish stats -o $statsFile $merFile
+
+
+
 ## copy jf output file to /staging
-mv $merFile $merDir/
+
+#mv $merFile $merDir/
+
 rm $fastaFilePrefix*
 

@@ -10,7 +10,7 @@ arguments = $(fastaFilePrefix) $(jfMerDir) $(outDir) $(merSize) $(CPUS) $(CLUSTE
 jfMerDir = /staging/sgoldstein/deBruijnWavelet/merTables
 outDir = outdir.$(CLUSTER)
 
-CPUS = 4
+CPUS = 1
 #size = 3G
 merSize = 21
 

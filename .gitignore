@@ -4,3 +4,4 @@ queue/error
 outdir*/
 data/
 bin/jellyfish
+*.tgz

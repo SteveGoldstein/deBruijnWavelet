@@ -15,31 +15,46 @@ GetOptions (
             );
 
 ## might not scale well;  refactor to readdir /pattern/ to scale;
-my @filelist = @ARGV[0..2];
-#my @filelist = @ARGV[0..2,-5..-1];
+my @filelist = @ARGV;
 
 
 my %histogramsFor;
+my %kValues; 
 foreach my $file (@filelist) {
     
     my $thisHistogram = readHistoFile($file);
     my ($genome,$k) = basename($file) =~ /^(.*)\.k(\d+)\..*$/;
     $histogramsFor{$genome} -> {$k} = $thisHistogram;
-    print join ("\t", $genome, $k, $file), "\n";
+    $kValues{$k} = 1;
+    #print join ("\t", $genome, $k, $file), "\n";
 }
 
+my @kValues = sort {$a<=>$b} keys %kValues;
 
 
 foreach my $genome (sort keys %histogramsFor) {
-    ## 1. get a list of all n for all k;
-    #
-    my %allKeys;
-    foreach my $hashRef(values($histogramsFor{$genome})){
-	map{$allKeys{$_} = 1;} keys(%$hashRef);
+    ############################################
+    ## 1. get a list of repeat counts (the x-axis of the histogram)
+    ##     for all k
+    my %repeatCounts;  #
+    my %histogramsForThisGenome = %{$histogramsFor{$genome}};
+    foreach my $hashRef(values(%histogramsForThisGenome)) {
+	map{$repeatCounts{$_} = 1;} keys(%$hashRef);
     }
-    print scalar (keys %allKeys);
+    my @repeatCounts = sort {$a<=>$b} keys %repeatCounts;
 
-
+    ############################################
+    # 2.
+    my @header = ("Genome", "x", @kValues);
+    print join("\t", @header), "\n";
+    foreach my $repeatCnt (@repeatCounts) {
+	my @numOccurences;
+	foreach my $k (@kValues) {
+	    my $val = $histogramsForThisGenome{$k}->{$repeatCnt} // 0;
+	    push @numOccurences, $val;
+	} ## foreach $k
+	print join("\t", $genome, $repeatCnt,@numOccurences), "\n";
+    } ## foreach repeatCnt
 }
 
 
@@ -69,8 +84,6 @@ sub readHistoFile {
 
 __END__
 
- for k in {4..5}; do f=GCA_000001405.28_GRCh38.p13_genomic.k$k.*.gz; echo $f; zcat $f|head -10; done|perl -nale 'if (/^GCA/) {($genome,$k) = /^(.*)\.k(\d+)\..*$/; next}; $h{$genome}->{$k} ->{$F[0]} = $F[1]; END{foreach $genome (sort keys %h){print $genome; %dbW = %{$h{$genome}};print join "\n", keys %dbW;}   }'
-GCA_000001405.28_GRCh38.p13_genomic
-4
+ bin/histograms2Table.pl outdir.8905338/GCA_000001405.28_GRCh38.p13_genomic.k*.hist*
 5
 

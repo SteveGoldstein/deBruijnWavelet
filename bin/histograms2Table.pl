@@ -29,8 +29,11 @@ foreach my $file (@filelist) {
     #print join ("\t", $genome, $k, $file), "\n";
 }
 
+## print header
 my @kValues = sort {$a<=>$b} keys %kValues;
-
+my @header = ("Genome", "x");
+push @header, map{"k_$_"} @kValues;
+print join("\t", @header), "\n";
 
 foreach my $genome (sort keys %histogramsFor) {
     ############################################
@@ -45,8 +48,6 @@ foreach my $genome (sort keys %histogramsFor) {
 
     ############################################
     # 2.
-    my @header = ("Genome", "x", @kValues);
-    print join("\t", @header), "\n";
     foreach my $repeatCnt (@repeatCounts) {
 	my @numOccurences;
 	foreach my $k (@kValues) {

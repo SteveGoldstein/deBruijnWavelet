@@ -3,6 +3,12 @@ queue/log
 queue/error
 outdir*/
 data/
-bin/jellyfish
+bin/jellyfish*
 *.tgz
 results/*
+
+###################
+# scratch files
+?
+??
+?.*

@@ -1,0 +1,6 @@
+## git commit:  45203aa
+
+bin/histograms2Table.pl outdir.8905338/*histo* |gzip -c > results/2021-05-25/histogramTable.tsv.gz
+
+bin/stats2Table.pl outdir.8905338/*stats > results/2021-05-25/statsTable.tsv
+
